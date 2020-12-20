@@ -1,0 +1,50 @@
+# Attack Case 5
+# el3232
+
+# ➜  ISP git:(master) ✗ python repy.py restrictions.default encasementlib.r2py reference_monitor_lra274.r2py el3232_test5.r2py
+
+
+# This attack attempts to open multiple files without closing the first
+
+# Clean up of existing file
+if "testfile.txt.a" in listfiles():
+    removefile("testfile.txt.a")
+if "testfile.txt.b" in listfiles():
+    removefile("testfile.txt.b")
+
+
+
+try:
+
+    # Open File Function Call
+    myfile=ABopenfile("testfile.txt",True)  # Create an AB file
+    myfile2=ABopenfile("testfile2.txt",True) # Create a second AB file without closing 1st
+    myfile3=ABopenfile("testfile3.txt",True) # Create a third AB file without closing first two
+
+    # myfile=ABopenfile("testfile4.txt",True) # Create a fourth AB file overwriting the first file variable
+
+    # Empty/New File should have contents 'SE' satisfying the requirement
+
+    myfile.writeat("Schanged1E",0)
+    # myfile2.writeat("Schanged2E",0)
+    # myfile3.writeat("Schanged3E",0)
+
+    myfile.close()
+    myfile = ABopenfile("testfile.txt",False)
+    contents = myfile.readat(None,0)
+    # log(contents)
+    assert("Schanged1E" == myfile.readat(None, 0))
+
+except:
+    # Error Handle or Failure Condition
+    log("file is not written with valid data properly!")
+
+finally:
+    myfile.close()
+
+    # try to open multiple files without closing the first
+    # --> call openABFile(filename), twice without closing it
+    # try to write a file with only 1 byte
+    # try to write a file larger than 500
+    # try to make a file name longer than 120
+    # 1 MORE TEST CASE at least

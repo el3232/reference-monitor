@@ -1,0 +1,37 @@
+# Attack Case 7
+# el3232
+
+# works against reference_monitor_xxxxxx.r2py
+
+# ➜  ISP git:(master) ✗ python repy.py restrictions.default encasementlib.r2py reference_monitor_lra274.r2py el3232_test6.r2py
+
+
+# check requirements
+
+# Clean up of existing file
+if "testfile.txt.a" in listfiles():
+    removefile("testfile.txt.a")
+if "testfile.txt.b" in listfiles():
+    removefile("testfile.txt.b")
+
+
+
+try:
+    # Open File Function Call
+    myfile=ABopenfile("testfile.txt",True)  #Create an AB file
+
+    # open a new file and write to it, read from it before saving/closing and it should be the old valid message
+
+    myfile.writeat("SlongvalidE",0)
+    
+    # log(myfile.readat(None, 0))
+
+    assert("SE" == myfile.readat(None, 0))
+
+
+except:
+    # Error Handle or Failure Condition
+    log("fileA was incorrectly updated prior to close")
+
+finally:
+    myfile.close()
